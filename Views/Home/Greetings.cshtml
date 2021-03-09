@@ -11,11 +11,14 @@
 <div>
     @if (Model.WillAttend == true)
     {
-        @:Ootame sind, kallis sõber!
+        @:<p>Ootame sind, kallis sõber!</p>
+        <div>@Html.ActionLink("Saada meldetuuletus", "Notificate", "Home", new { name = Model.Name, email = Model.Email }, new { @class="btn btn-primary" })</div>
     }
     else
     {
-        @:Väga kurb. Näeme hiljem!
+        @:<p>Väga kurb. Näeme hiljem!</p>
     }
-    @ViewData["Message"]
+    <p>
+        @ViewData["Message"]
+    </p>
 </div>
