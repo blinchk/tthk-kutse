@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Tere tulemast peole!";
+}
+
+<div class="jumbotron">
+    <h1>@ViewData["Greeting"], kallis sõber!</h1>
+</div>
+
+<div>
+    @ViewData["Message"]
+    <div>
+        <img src="#" alt="Alternate Text" />
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Vastan", "Questionnaire", "Home", new {}, new { @class = "btn btn-primary" })
+</div>
