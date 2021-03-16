@@ -1,0 +1,53 @@
+﻿@model KutseApp.Models.Guest
+
+@{
+    ViewData["Title"] = "Lisa uus külaline";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>Külaline</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Lisa">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Nimi</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">E-post</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Phone" class="control-label">Telefoninumber</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="WillAttend" class="control-label">Osaleb?</label>
+                @Html.DropDownListFor(model => model.WillAttend, new[]
+                            {
+                                new SelectListItem() { Text = "Tulen kindlasti", Value=bool.TrueString },
+                                new SelectListItem() { Text = "Kahjuks, ei saa tulla", Value=bool.FalseString }
+                            },
+                                "Vali siit", new { @class = "form-control" })
+                <span asp-validation-for="WillAttend" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Lisa" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Tagasi kirja</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

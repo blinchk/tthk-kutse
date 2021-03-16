@@ -1,16 +1,26 @@
-﻿using KutseApp.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
+using KutseApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace KutseApp.Controllers
 {
     public class HomeController : Controller
     {
+        private const string Sender = "contacts@laus19.thkit.ee";
+        private const string Password = "siinSaabTeavitadaKeegi";
+        private const string Organizer = "bchik3@gmail.com";
         private readonly ILogger<HomeController> _logger;
+
+        private readonly string[] months =
+        {
+            null, "jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober",
+            "november", "detsember"
+        };
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,17 +30,17 @@ namespace KutseApp.Controllers
         public IActionResult Index()
         {
             ViewData["Message"] = "Ootan sind minu peole";
-            int hour = DateTime.Now.Hour;
+            var hour = DateTime.Now.Hour;
             ViewData["Greeting"] = Greeting(DateTime.Now);
             return View();
         }
-        
+
         [HttpGet]
         public IActionResult Questionnaire()
         {
             return View();
         }
-        
+
         [HttpPost]
         public IActionResult Questionnaire(Guest guest)
         {
@@ -52,21 +62,21 @@ namespace KutseApp.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
         }
 
         public IActionResult Notificate(string name, string email)
         {
             SendMessage(name, email);
             ViewData["Message"] = "Ootan sind minu peole";
-            int hour = DateTime.Now.Hour;
+            var hour = DateTime.Now.Hour;
             ViewData["Greeting"] = Greeting(DateTime.Now);
             return View("Index");
         }
 
         private string Greeting(DateTime dateTime)
         {
-            int hour = dateTime.Hour;
+            var hour = dateTime.Hour;
             return hour switch
             {
                 >= 4 and < 12 => "Tere hommikust",
@@ -76,11 +86,6 @@ namespace KutseApp.Controllers
             };
         }
 
-        private const string Sender = "contacts@laus19.thkit.ee";
-        private const string Password = "siinSaabTeavitadaKeegi";
-        private const string Organizer = "bchik3@gmail.com";
-        private string[] months = new string[] { null, "jaanuar", "veebruar", "märts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober", "november", "detsember" };
-        
         private void SendMessage(Guest guest)
         {
             try
@@ -94,7 +99,8 @@ namespace KutseApp.Controllers
                 message.From = new MailAddress(Sender, "Nikolas Laus");
                 message.To.Add(Organizer);
                 var attend = Convert.ToBoolean(guest.WillAttend) ? "tuleb peole" : "ei tule peole";
-                message.Body = $"{guest.Name} vastas, et {attend}.\nTelefoninumber: {guest.Phone}.\nE-post: {guest.Email}.";
+                message.Body =
+                    $"{guest.Name} vastas, et {attend}.\nTelefoninumber: {guest.Phone}.\nE-post: {guest.Email}.";
                 message.Subject = "Pidu";
                 smtpClient.Send(message);
                 ViewData["Message"] = "Kiri on saadetud.";
@@ -126,7 +132,6 @@ namespace KutseApp.Controllers
             }
             catch (Exception)
             {
-                
             }
         }
     }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using KutseApp.Models;
 
 namespace KutseApp.Data
 {
@@ -12,5 +13,6 @@ namespace KutseApp.Data
             : base(options)
         {
         }
+        public DbSet<KutseApp.Models.Guest> Guest { get; set; }
     }
 }
