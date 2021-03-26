@@ -7,36 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using KutseApp.Data;
 using KutseApp.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace KutseApp.Controllers
 {
-    public class GuestsController : Controller
+    public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public GuestsController(ApplicationDbContext context)
+        public EventsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Guests
+        // GET: Events
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Guest.ToListAsync());
+            return View(await _context.Event.ToListAsync());
         }
 
-        [HttpGet]
-        [Route("/Guests/Index/{willAttend}")]
-        public async Task<IActionResult> Index(bool willAttend)
-        {
-            if (willAttend)
-            {
-                return View(await _context.Guest.Where(guest => (bool)guest.WillAttend).ToListAsync());
-            }
-            return View(await _context.Guest.Where(guest => !(bool)guest.WillAttend).ToListAsync());
-        }
-        // GET: Guests/Details/5
+        // GET: Events/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,39 +33,39 @@ namespace KutseApp.Controllers
                 return NotFound();
             }
 
-            var guest = await _context.Guest
+            var @event = await _context.Event
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (guest == null)
+            if (@event == null)
             {
                 return NotFound();
             }
 
-            return View(guest);
+            return View(@event);
         }
 
-        // GET: Guests/Create
+        // GET: Events/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Guests/Create
+        // POST: Events/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Email,Phone,WillAttend")] Guest guest)
+        public async Task<IActionResult> Create([Bind("Id,Title,Date")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(guest);
+                _context.Add(@event);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(guest);
+            return View(@event);
         }
 
-        // GET: Guests/Edit/5
+        // GET: Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,22 +73,22 @@ namespace KutseApp.Controllers
                 return NotFound();
             }
 
-            var guest = await _context.Guest.FindAsync(id);
-            if (guest == null)
+            var @event = await _context.Event.FindAsync(id);
+            if (@event == null)
             {
                 return NotFound();
             }
-            return View(guest);
+            return View(@event);
         }
 
-        // POST: Guests/Edit/5
+        // POST: Events/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,Phone,WillAttend")] Guest guest)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Date")] Event @event)
         {
-            if (id != guest.Id)
+            if (id != @event.Id)
             {
                 return NotFound();
             }
@@ -108,12 +97,12 @@ namespace KutseApp.Controllers
             {
                 try
                 {
-                    _context.Update(guest);
+                    _context.Update(@event);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!GuestExists(guest.Id))
+                    if (!EventExists(@event.Id))
                     {
                         return NotFound();
                     }
@@ -124,10 +113,10 @@ namespace KutseApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(guest);
+            return View(@event);
         }
 
-        // GET: Guests/Delete/5
+        // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,30 +124,30 @@ namespace KutseApp.Controllers
                 return NotFound();
             }
 
-            var guest = await _context.Guest
+            var @event = await _context.Event
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (guest == null)
+            if (@event == null)
             {
                 return NotFound();
             }
 
-            return View(guest);
+            return View(@event);
         }
 
-        // POST: Guests/Delete/5
+        // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var guest = await _context.Guest.FindAsync(id);
-            _context.Guest.Remove(guest);
+            var @event = await _context.Event.FindAsync(id);
+            _context.Event.Remove(@event);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool GuestExists(int id)
+        private bool EventExists(int id)
         {
-            return _context.Guest.Any(e => e.Id == id);
+            return _context.Event.Any(e => e.Id == id);
         }
     }
 }

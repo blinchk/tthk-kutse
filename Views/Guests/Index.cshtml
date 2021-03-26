@@ -7,7 +7,9 @@
 <h1>@ViewData["Title"]</h1>
 
 <p>
-    <a asp-action="Create">Lisa uus külaline</a>
+    <a asp-action="Create" class="btn btn-success btn-sm">Lisa uus külaline</a>
+    <a asp-action="Index" asp-route-willAttend="true" class="btn btn-primary btn-sm">Osaleb</a>
+    <a asp-action="Index" asp-route-willAttend="false" class="btn btn-primary btn-sm">Ei osale</a>
 </p>
 <table class="table">
     <thead>

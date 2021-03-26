@@ -14,5 +14,6 @@ namespace KutseApp.Data
         {
         }
         public DbSet<KutseApp.Models.Guest> Guest { get; set; }
+        public DbSet<KutseApp.Models.Event> Event { get; set; }
     }
 }

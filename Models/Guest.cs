@@ -21,7 +21,7 @@ namespace KutseApp.Models
         public string Phone { get; set; }
         
         [Required(ErrorMessage = "Sisesta oma valik")]
-        [Display(Name = "Osaleb?    ")]
+        [Display(Name = "Osaleb?")]
         public bool? WillAttend { get; set; }
     }
 }
