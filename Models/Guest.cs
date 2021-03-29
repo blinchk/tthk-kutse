@@ -23,5 +23,9 @@ namespace KutseApp.Models
         [Required(ErrorMessage = "Sisesta oma valik")]
         [Display(Name = "Osaleb?")]
         public bool? WillAttend { get; set; }
+
+        public Event Event { get; set; }
+
+        public bool Confirmed { get; set; }
     }
 }
